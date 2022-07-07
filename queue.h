@@ -1,8 +1,10 @@
+#ifndef  _QUEUE_H
+#define  _QUEUE_H
+#define MAX 1000
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX 1000
-typedef int Item;
 
+typedef  int Item;
 typedef struct SqQueue
 {
 	Item d[MAX];
@@ -51,33 +53,4 @@ Item deQueue(SqQueue* p, Item* k)
 		return 1;
 	}
 }
-
-
-int main()
-{
-SqQueue* qu;
-InitQueue(&qu);
-int n,m;
-scanf("%d %d",&n,&m);
-int i=1,j,k;
-while(i<=n)
-{
-	enQueue(qu,i);
-	i++;
-}
-while(!QueueEmpty(qu))
-{
-for(j=0;j<m-1;j++)
-{
-	deQueue(qu,&k);
-	enQueue(qu,k);
-}
-if(!QueueEmpty(qu))
-{
-	deQueue(qu,&k);
-}
-if(QueueEmpty(qu))
-printf("%d Hello",k);
-}
-}
-
+#endif

@@ -1,81 +1,107 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX 1000
-typedef int Item;
+#include <string.h>
+#define MaxSize 50000 //定义栈中元素最大个数
 
-typedef struct SqQueue
-{
-	Item d[MAX];
-	int front, rear;
-}SqQueue;
+typedef struct{
+	char data[MaxSize];
+	int top;
+}SqStack;
 
-void InitQueue(SqQueue** q)
-{
-	*q = (SqQueue*)malloc(sizeof(SqQueue));
-	(*q)->front = (*q)->rear = 0;
+void InitStack(SqStack *S){
+	S->top = -1;
 }
 
-void DestoryQueue(SqQueue* p)
-{
-	free(p);
-}
-
-int QueueEmpty(SqQueue* p)
-{
-	return p->front == p->rear;
-}
-
-Item enQueue(SqQueue* p, Item k)
-{
-	if ((p->rear+1)%MAX== p->front)
-	{
-		return 0;
-	}
-	else
-	{
-		p->rear = (p->rear + 1) % MAX;
-		p->d[p->rear] = k;
+int IsEmpty(SqStack S){
+	if(S.top == -1){
 		return 1;
 	}
+	return 0;
 }
-Item deQueue(SqQueue* p, Item* k)
-{
-	if (p->front == p->rear)
-	{
-		return 0;
+
+void Push(SqStack *S,char x){
+	if(S->top == MaxSize-1){
+		printf("栈已满"); 
+		return;
 	}
-	else
-	{
-		p->front = ((p->front) + 1)%MAX;
-		*k = p->d[p->front];
-		return 1;
+	S->top += 1;
+	S->data[S->top] = x;
+}
+
+void Pop(SqStack *S,char *x){
+	if(S->top == -1){
+		printf("栈已满");
+		return;
 	}
+	*x = S->data[S->top];
+	S->top -= 1;
 }
-
-
-int main()
+int posi1[50000]={0};
+int k=-1;
+typedef struct step
 {
-SqQueue* qu;
-InitQueue(&qu);
-int n,m,t;
-scanf("%d %d %d",&n,&m,&t);
-int i=0,j=t,k,find;
-while(i<n)
-{
-	k=(i+m)%(n+1);
-	if(k==0) find=1;
-	enQueue(qu,find==1?k+1:k);
-	i++;
-}
-while(!QueueEmpty(qu))
-{
-  deQueue(qu,&k);
-  if(j%7!=0)
-  enQueue(qu,k);
- else printf("%d ",k);
-j++;
-}
+	int posi1;
+	int posi2;
+}step;
+
+step a[1000];
+int s1;
+int bracketCheck(char str[],int length){
+	SqStack S;
+	InitStack(&S); 
+	for(int i=0;i<length;i++){
+		if(str[i]=='('||str[i]=='{'||str[i]=='['){
+			Push(&S,str[i]);
+			posi1[++k]=i;
+		}else{
+			if(IsEmpty(S)){ 
+				return 0; 
+			}
+			char topElem; 
+			Pop(&S,&topElem); 
+			if(str[i]==')'&&topElem =='('){
+				a[s1].posi1=posi1[k];
+				a[s1].posi2=i;
+				k--;
+				s1++;
+			}
+			else if(str[i]=='}'&&topElem =='{'){
+				a[s1].posi1=posi1[k];
+				a[s1].posi2=i;
+				k--;
+				s1++;
+			}
+			else if(str[i]==']'&&topElem =='['){
+				a[s1].posi1=posi1[k];
+				a[s1].posi2=i;
+				k--;
+				s1++;
+			}
+			else 
+			{
+				return 0;
+			}
+		}
+	}
+	return IsEmpty(S);
 }
 
-
+char s[MaxSize];
+int main(){
+	
+	gets(s);
+	int len = strlen(s);
+	if(bracketCheck(s,len)){
+		printf("YES\n");
+		for(int i=0;i<=s1;i++)
+		{
+			
+				printf("%d %d\n",a[i].posi1,a[i].posi2);
+			
+		}
+	}else{
+		printf("NO");
+	}
+	return 0;
+}
 

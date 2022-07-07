@@ -57,27 +57,25 @@ int main()
 {
 SqQueue* qu;
 InitQueue(&qu);
-int n,m;
-scanf("%d %d",&n,&m);
-int i=1,j,k;
-while(i<=n)
+int n,m,t;
+scanf("%d %d %d",&n,&m,&t);
+int i=0,j=t,k,find;
+while(i<n)
 {
-	enQueue(qu,i);
+	k=(i+m)%(n+1);
+	if(k==0) find=1;
+	enQueue(qu,find==1?k+1:k);
 	i++;
 }
 while(!QueueEmpty(qu))
 {
-for(j=0;j<m-1;j++)
-{
-	deQueue(qu,&k);
-	enQueue(qu,k);
-}
-if(!QueueEmpty(qu))
-{
-	deQueue(qu,&k);
-}
-if(QueueEmpty(qu))
-printf("%d Hello",k);
+  deQueue(qu,&k);
+  if(j%7!=0)
+  enQueue(qu,k);
+ else printf("%d ",k);
+j++;
 }
 }
+
+
 
